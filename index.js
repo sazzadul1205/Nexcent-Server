@@ -38,6 +38,7 @@ async function run() {
         const CommunityCollection = client.db('PNexcentDB').collection('Community');
         const HelpingCollection = client.db('PNexcentDB').collection('Helping');
         const CommunityUpdateCollection = client.db('PNexcentDB').collection('CommunityUpdate');
+        const RegisteredUserCollection = client.db('PNexcentDB').collection('RegisteredUser');
 
         // API's
 
@@ -74,6 +75,19 @@ async function run() {
             res.send(result);
         });
 
+
+        // RegisteredUser API
+        // view all RegisteredUser
+        app.get('/RegisteredUser', async (req, res) => {
+            const result = await RegisteredUserCollection.find().toArray();
+            res.send(result);
+        });
+        // Post RegisteredUser
+        app.post('/RegisteredUser', async (req, res) => {
+            const request = req.body;
+            const result = await RegisteredUserCollection.insertOne(request);
+            res.send(result)
+        });
 
         // Send a ping to confirm a successful connection
         await client.db("admin").command({ ping: 1 });
