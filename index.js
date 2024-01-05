@@ -39,9 +39,10 @@ async function run() {
         const HelpingCollection = client.db('PNexcentDB').collection('Helping');
         const CommunityUpdateCollection = client.db('PNexcentDB').collection('CommunityUpdate');
         const RegisteredUserCollection = client.db('PNexcentDB').collection('RegisteredUser');
+        const NavLinksCollection = client.db('PNexcentDB').collection('NavLink');
+        const BannersCollection = client.db('PNexcentDB').collection('Banners');
 
         // API's
-
 
         // Clients API
         // view all Clients
@@ -50,14 +51,12 @@ async function run() {
             res.send(result);
         });
 
-
         // Community API
         // view all Community
         app.get('/Community', async (req, res) => {
             const result = await CommunityCollection.find().toArray();
             res.send(result);
         });
-
 
         // Helper API
         // view all Helping
@@ -66,15 +65,12 @@ async function run() {
             res.send(result);
         });
 
-
-
         // CommunityUpdate API
         // view all CommunityUpdates
         app.get('/CommunityUpdate', async (req, res) => {
             const result = await CommunityUpdateCollection.find().toArray();
             res.send(result);
         });
-
 
         // RegisteredUser API
         // view all RegisteredUser
@@ -87,6 +83,29 @@ async function run() {
             const request = req.body;
             const result = await RegisteredUserCollection.insertOne(request);
             res.send(result)
+        });
+
+        // NavLinks API
+        // view all NavLinks
+        app.get('/NavLink', async (req, res) => {
+            const result = await NavLinksCollection.find().toArray();
+            res.send(result);
+        });
+
+
+        // Banners API
+        // view all Banners
+        app.get('/Banners', async (req, res) => {
+            const { bannerNo } = req.query;
+            if (bannerNo) {
+                const query = { bannerNo: parseInt(bannerNo) };
+                const result = await BannersCollection.findOne(query);
+                res.send(result);
+            }
+            else {
+                const result = await BannersCollection.find().toArray();
+                res.send(result);
+            }
         });
 
         // Send a ping to confirm a successful connection
