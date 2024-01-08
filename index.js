@@ -41,6 +41,11 @@ async function run() {
         const RegisteredUserCollection = client.db('PNexcentDB').collection('RegisteredUser');
         const NavLinksCollection = client.db('PNexcentDB').collection('NavLink');
         const BannersCollection = client.db('PNexcentDB').collection('Banners');
+        const ServicesCollection = client.db('PNexcentDB').collection('Services');
+        const FeaturesCollection = client.db('PNexcentDB').collection('Features');
+        const ProductsCollection = client.db('PNexcentDB').collection('Products');
+        const FAQCollection = client.db('PNexcentDB').collection('FAQ');
+        const TestimonialsCollection = client.db('PNexcentDB').collection('Testimonials');
 
         // API's
 
@@ -92,7 +97,6 @@ async function run() {
             res.send(result);
         });
 
-
         // Banners API
         // view all Banners
         app.get('/Banners', async (req, res) => {
@@ -106,6 +110,53 @@ async function run() {
                 const result = await BannersCollection.find().toArray();
                 res.send(result);
             }
+        });
+
+        // Services API
+        // view all Services
+        app.get('/Services', async (req, res) => {
+            const result = await ServicesCollection.find().toArray();
+            res.send(result);
+        });
+
+        // Features API
+        // view all Features
+        app.get('/Features', async (req, res) => {
+            const result = await FeaturesCollection.find().toArray();
+            res.send(result);
+        });
+
+        // Products API
+        // View all Products 
+        app.get('/Products', async (req, res) => {
+            const { category, name } = req.query;
+        
+            const query = {};
+        
+            if (category) {
+                query.category = category;
+            }
+        
+            if (name) {
+                query.name = { $regex: new RegExp(name, 'i') };
+            }
+        
+            const result = await ProductsCollection.find(query).toArray();
+            res.json(result);
+        });
+
+        // FAQ API
+        // view all FAQ
+        app.get('/FAQ', async (req, res) => {
+            const result = await FAQCollection.find().toArray();
+            res.send(result);
+        });
+
+        // Testimonials API
+        // view all Testimonials
+        app.get('/Testimonials', async (req, res) => {
+            const result = await TestimonialsCollection.find().toArray();
+            res.send(result);
         });
 
         // Send a ping to confirm a successful connection
